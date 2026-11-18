@@ -1,0 +1,42 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.boundaryx.cloudrasp</groupId>
+  <artifactId>java4shell-rasp</artifactId>
+  <version>1.1.0</version>
+  <properties>
+    <maven.compiler.release>8</maven.compiler.release>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.build.outputTimestamp>2026-11-18T00:00:00Z</project.build.outputTimestamp>
+  </properties>
+  <dependencies>
+    <dependency><groupId>net.bytebuddy</groupId><artifactId>byte-buddy</artifactId><version>1.18.14</version></dependency>
+  </dependencies>
+  <build>
+    <finalName>java4shell-rasp</finalName>
+    <plugins>
+      <plugin><artifactId>maven-compiler-plugin</artifactId><version>3.13.0</version></plugin>
+      <plugin>
+        <artifactId>maven-jar-plugin</artifactId><version>3.4.2</version>
+      </plugin>
+      <plugin>
+        <artifactId>maven-shade-plugin</artifactId><version>3.5.0</version>
+        <executions><execution><phase>package</phase><goals><goal>shade</goal></goals>
+          <configuration>
+            <createDependencyReducedPom>false</createDependencyReducedPom>
+            <shadedArtifactAttached>true</shadedArtifactAttached>
+            <shadedClassifierName>agent</shadedClassifierName>
+            <relocations><relocation><pattern>net.bytebuddy</pattern><shadedPattern>com.boundaryx.cloudrasp.java4shell.internal.bytebuddy</shadedPattern></relocation></relocations>
+            <filters><filter><artifact>net.bytebuddy:byte-buddy</artifact><excludes><exclude>META-INF/versions/**</exclude></excludes></filter></filters>
+            <transformers><transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+              <manifestEntries>
+                <Premain-Class>com.boundaryx.cloudrasp.java4shell.Agent</Premain-Class>
+                <Agent-Class>com.boundaryx.cloudrasp.java4shell.Agent</Agent-Class>
+                <Can-Retransform-Classes>true</Can-Retransform-Classes>
+              </manifestEntries>
+            </transformer></transformers>
+          </configuration>
+        </execution></executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>

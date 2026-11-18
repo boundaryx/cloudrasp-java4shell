@@ -1,0 +1,4 @@
+/target/
+/dist/
+/tests/
+__pycache__/
